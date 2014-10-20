@@ -25,8 +25,8 @@ public:
 	//static int matchSide(string text, int iText, int m, bool isMustMatch);
 	//static int matchAny(string text, int iText, int m, bool isMustMatch);
 	//static int matchLineStart(string text, int iText, bool isMustMatch);
-	static int matchNotWord(string* ans, string text, int iText, int m, bool isMustMatch);
-	static int matchNotSpace(string* ans, string text, int iText, int m, bool isMustMatch);
+	//static int matchNotWord(string* ans, string text, int iText, int m, bool isMustMatch);
+	//static int matchNotSpace(string* ans, string text, int iText, int m, bool isMustMatch);
 	//static int matchNotSide(string text, int iText, int m, bool isMustMatch);
 	static int matchNotNum(string* ans, string text, int iText, int m, bool isMustMatch);
 	//static int matchLineEnd(string text, int iText, bool isMustMatch);

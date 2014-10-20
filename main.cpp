@@ -18,8 +18,8 @@ int main(){
 		ifstream infile(file, ios::in);
 		string text;
 		getline(infile, text);
-		s = "\\d*";
-		text = "abdc134t r1235r";
+		s = "\\d*\\d{5,12}";
+		text = "abdc134t r12356r";
 		string ans = RegularExp::get(s, text);
 		cout << ans << endl;
 		return 0;

@@ -28,8 +28,10 @@ string RegularExp::work(string re, string text, int iText){
 			flag = false;
 			side = hasMore(re, text, iText);
 			isMustMatch = side[2];
+
 			if (side[0] == 1 && 1 == side[1]){
 				iText = matchNum(&ans, text, iText, 1, isMustMatch, true);
+				if (iText == -1) return "";
 			}
 			else{
 				int maxLen = 0;
@@ -40,22 +42,24 @@ string RegularExp::work(string re, string text, int iText){
 				strp = ans;
 				for (int i = left; i <= right; i++){
 					str = strp;
-					iText = matchNum(&str, text, lastiText, i, isMustMatch);
+					iText = matchNum(&str, text, lastiText, i, isMustMatch, true);
 					if (iText == -1) continue;
-					str.append(work(re, text.substr(iText, text.length()), 0));
+					str.append(work(re, text.substr(iText, text.length() - iText + 1), 0));
 					iRe = t;
 					if (str.length() > maxLen ){
 						ans = str;
+						maxLen = str.length();
 					}
+					
 				}
-				
+				if (ans.length() == strp.length()) return "";
 				return ans;
 			}
 			break;
-		 case 'w':
-			if (!flag) matchChar(text, ch, true);
-			matchWord(text, iText, 1, true);
-			break;
+		 //case 'w':
+			////if (!flag) matchChar(text, ch, true);
+			//matchWord(text, iText, 1, true);
+			//break;
 		/*case 's':
 			if (!flag) matchChar(text, ch, true);
 			matchSpace(text, iText, 1, true);
@@ -126,7 +130,9 @@ int RegularExp::matchNum(string* ans, string text, int iText, int m, bool isMust
 		return iText;
 	}
 	bool flag = false;
-	while (iText < text.length() - m + 1){
+	int last = text.length() - m + 1;
+	while (iText < last){
+		
 		for (int i = iText; i < iText + m; i++){
 			if (text[i] >= '0' && text[i] <= '9' && isNum) continue;
 			flag = true;
@@ -135,7 +141,7 @@ int RegularExp::matchNum(string* ans, string text, int iText, int m, bool isMust
 		if (!flag){
 			str = text.substr(iText, m);
 			ans->append(str);
-			return ++iText;
+			return iText + m;
 		}
 		flag = false;
 		++iText;
@@ -148,15 +154,59 @@ int RegularExp::matchNum(string* ans, string text, int iText, int m, bool isMust
 
 int* RegularExp::hasMore(string re, string text, int iText)
 {
-	int a[3];
-	++iRe;
-	char ch = re[iRe];
-	if (ch == '*'){
-		a[1] = 0;
-		a[2] = text.length() - iText + 1;
-		a[0] = false;
-	}
-	return a;
+		int a[3];
+		int i;
+		int n;
+		iRe++;
+		a[0] = 0;
+		a[1] = text.length() - iText + 1;
+		a[2] = false;
+		char ch = re[iRe];
+		switch (ch){
+		case '*':
+			a[0] = 0;
+			++iRe;
+			break;
+		case '+':
+			a[0] = 1;
+			++iRe;
+			break;
+		case '?':
+			++iRe;
+			a[0] = 0;
+			a[1] = 1;
+			break;
+		case '{':
+			for (i = 0; re[iRe + i] != ',' && re[iRe + i] != '}'; i++);
+			int tem[10];
+			for (int j = 0; j < i - 1; j++){
+				a[0] += (re[iRe + i - 1 - j] - 48) * pow(10, j);
+			}
+			if (re[iRe + i] == '}'){
+				iRe += i + 1;
+				a[1] = a[0];
+				a[2] = true;
+			}
+			else{
+				if (re[iRe + i + 1] == '}')
+					iRe += i + 2; 
+				else{
+					a[1] = 0;
+					for (n = 0; re[iRe + i + n] != '}'; n++);
+					for (int j = 0; j < n - 1; j++){
+						a[1] += (re[iRe + i + n - 1 - j] - 48)* pow(10, j);
+					}
+					iRe += i + n + 1;
+				}
+			}
+			break;
+		default: 
+			a[0] = 1;
+			a[1] = 1;
+			a[2] = true;
+			break;
+		}
+		return a;
 }
 
 int RegularExp::matchWord(string* ans, string text, int iText, int m, bool isMustMatch)
