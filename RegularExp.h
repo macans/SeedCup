@@ -1,6 +1,6 @@
 #ifndef _REGULAR_EXP
 #define _REGULAR_EXP
-
+#define null  ""
 
 #include <iostream>
 #include <string>
@@ -10,30 +10,27 @@ using namespace std;
 class RegularExp
 {
 private:
-	static int iRe;
-	static string ans;
+	static string re;
 	static bool isNull;
+	static bool isFirstCmd;
 public:
-	static string work(string re, string text, int iText);
+	static string work(string text, int iText, int iCmd);
 	RegularExp();
 	~RegularExp();
 	static void dealBra();
 	static string get(string re, string text);
+	static int match(char ch, string* ans, string text, int iText, int m, bool isMustMatch);
 	static int matchNum(string* ans, string text, int iText, int m, bool isMustMatch, bool isNum);
-	static int matchWord(string* ans, string text, int iText, int m, bool isMustMatch);
-	static int matchSpace(string* ans, string text, int iText, int m, bool isMustMatch);
+	static int matchWord(string* ans, string text, int iText, int m, bool isMustMatch, bool isNum);
+	static int matchSpace(string* ans, string text, int iText, int m, bool isMustMatch, bool isNum);
 	//static int matchSide(string text, int iText, int m, bool isMustMatch);
-	//static int matchAny(string text, int iText, int m, bool isMustMatch);
+//	static int matchAny(string text, int iText, int m, bool isMustMatch);
 	//static int matchLineStart(string text, int iText, bool isMustMatch);
-	//static int matchNotWord(string* ans, string text, int iText, int m, bool isMustMatch);
-	//static int matchNotSpace(string* ans, string text, int iText, int m, bool isMustMatch);
-	//static int matchNotSide(string text, int iText, int m, bool isMustMatch);
-	static int matchNotNum(string* ans, string text, int iText, int m, bool isMustMatch);
 	//static int matchLineEnd(string text, int iText, bool isMustMatch);
 	//static int matchMidBra(string text, int iText, bool isMustMatch);
-	//static int matchChar(string text, char ch, bool isMustMatch);
+	static bool matchChar(string* ans, string text, char ch, int iText);
 
-	static int* hasMore(string re, string text, int iText);
+	static int* hasMore(string text, int iText, int iRe);
 };
 #endif // !_REGULAR_EXP
 
