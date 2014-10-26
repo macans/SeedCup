@@ -18,8 +18,10 @@ int main(){
 		ifstream infile(file, ios::in);
 		string text;
 		getline(infile, text);
-		s = "\\d+\\w*";
-		text = "abdc134t r12356r";
+		s = "((\\d+)(\\s+)(\\d+))\\s+(\\4\\2)";
+		text = "abc23  456 45623cdfad23 dfe";
+		//s = "\\b\\w";
+		//text = " abc1d";
 		string ans = RegularExp::get(s, text);
 		cout << ans << endl;
 		return 0;
