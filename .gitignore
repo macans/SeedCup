@@ -41,3 +41,12 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+*.tlog
+*.log
+*.obj
+*.vcxproj
+*.filters
+*.pdb
+*.idb
+*.txt
